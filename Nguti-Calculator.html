@@ -1,78 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>To the Power of Math from Nguti!</title>
-    <!-- Styling for the client UI -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Calculator from the People's Republic of Nguti</title>
     <style>
-    h1 {
-        color: #FFFFFF;
-        font-family: system-ui;
-		margin-left: 20px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-	body {
-        background-color: #222629;
+        .calculator {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-    label {
-        color: #86C232;
-        font-family: system-ui;
-        font-size: 20px;
-        margin-left: 20px;
-		margin-top: 20px;
+        label {
+            display: block;
+            margin-bottom: 5px;
         }
-     button {
-        background-color: #86C232;
-		border-color: #86C232;
-		color: #FFFFFF;
-        font-family: system-ui;
-        font-size: 20px;
-		font-weight: bold;
-        margin-left: 30px;
-		margin-top: 20px;
-		width: 140px;
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #cccccc;
+            border-radius: 5px;
         }
-	 input {
-        color: #222629;
-        font-family: system-ui;
-        font-size: 20px;
-        margin-left: 10px;
-		margin-top: 20px;
-		width: 100px;
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
         }
     </style>
-    <script>
-        // callAPI function that takes the base and exponent numbers as parameters
-        var callAPI = (base,exponent)=>{
-            // instantiate a headers object
-            var myHeaders = new Headers();
-            // add content type header to object
-            myHeaders.append("Content-Type", "application/json");
-            // using built in JSON utility package turn object to string and store in a variable
-            var raw = JSON.stringify({"base":base,"exponent":exponent});
-            // create a JSON object with parameters for API call and store in a variable
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            // make API call with parameters and use promises to get response
-            fetch("YOUR API GATEWAY ENDPOINT", requestOptions)
-            .then(response => response.text())
-            .then(result => alert(JSON.parse(result).body))
-            .catch(error => console.log('error', error));
-        }
-    </script>
 </head>
 <body>
-    <h1>TO THE POWER OF MATH POWERED BY NGUTI MATHEMATICIANS!</h1>
-	<form>
-        <label>Base number:</label>
-        <input type="text" id="base">
-        <label>...to the power of:</label>
-        <input type="text" id="exponent">
-        <!-- set button onClick method to call function we defined passing input values as parameters -->
-        <button type="button" onclick="callAPI(document.getElementById('base').value,document.getElementById('exponent').value)">CALCULATE</button>
-    </form>
+    <div class="calculator">
+        <h1>Power Calculator from The People's Republic of Nguti</h1>
+        <label for="base">Base number:</label>
+        <input type="number" id="base" placeholder="Base number">
+        <label for="exponent">...to the power of:</label>
+        <input type="number" id="exponent" placeholder="...to the power of">
+        <button onclick="calculatePower()">CALCULATE</button>
+        <div class="result" id="result"></div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        function calculatePower() {
+            const base = parseFloat(document.getElementById('base').value);
+            const exponent = parseFloat(document.getElementById('exponent').value);
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+
+            resultDiv.innerText = "";
+            errorDiv.innerText = "";
+
+            if (isNaN(base) || isNaN(exponent)) {
+                errorDiv.innerText = 'Please enter valid numbers.';
+                return;
+            }
+
+            if (document.getElementById('base').value === '' || document.getElementById('exponent').value === '') {
+                errorDiv.innerText = 'Please enter both base and exponent.';
+                return;
+            }
+
+            const result = Math.pow(base, exponent);
+            resultDiv.innerText = `${base} to the power of ${exponent} is ${result}`;
+        }
+
+        document.getElementById('base').addEventListener('input', () => {
+          document.getElementById('result').innerText = "";
+          document.getElementById('error').innerText = "";
+        });
+
+        document.getElementById('exponent').addEventListener('input', () => {
+          document.getElementById('result').innerText = "";
+          document.getElementById('error').innerText = "";
+        });
+    </script>
 </body>
 </html>
